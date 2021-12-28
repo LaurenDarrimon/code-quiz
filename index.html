@@ -12,34 +12,43 @@
 
     <header>
         <h1>Coding Quiz Game</h1>
-        <h2>Can you beat your high score in time?</h2> 
-        <p>
-            Think carefully, because if you get it wrong... your timer <em>looses</em> seconds. Harsh, right?
-        </p>  
+        <h2>Can you beat your high score in time?</h2>   
     </header>
 
     <main>
-        <h3> 
-            <span id="question-number">Question #. </span> 
-            <span id= question>The text of the question will go here.</span> 
-        </h3>
-        <label for="answer-choices">select one:</label>
-        <select name="options" id="answer-choices">
-            <option value=""> Please choose the best answer </option>
-            <option value="a">a. </option>
-            <option value="b">b. </option>
-            <option value="c">c. </option>
-            <option value="d">d. </option>
-        </select>
-	    <button id="submit">Submit</button>   
+        <section id="question-card">
+            <h3> 
+                <span id="question-number">Question #. </span> 
+                <span id= question>The text of the question will go here.</span> 
+            </h3>
+            <br>
+            <label for="answer-choices">select one:</label>
+            <select name="options" id="answer-choices">
+                <option value=""> Please choose the best answer </option>
+                <option value="a">a. </option>
+                <option value="b">b. </option>
+                <option value="c">c. </option>
+                <option value="d">d. </option>
+            </select>
+            <br>
+            <button id="submit">Submit</button> 
+            <br>
+            <br>
+            <p id = note>
+                Think carefully, because if you get it wrong... your timer <em>looses</em> seconds. Harsh, right?
+            </p>
+        </section>  
+        
+
+        <aside>
+            <h2>Time Remaining : 
+                <span id="countdown"> 100 </span>
+                seconds. 
+            </h2>
+        </aside>
     </main>
 
-    <aside>
-        <h2>Time Remaining : 
-            <span id="countdown"> 100 </span>
-            seconds. 
-        </h2>
-    </aside>
+
 
     <footer> 
         <p>
