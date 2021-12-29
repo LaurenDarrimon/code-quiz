@@ -34,21 +34,46 @@ let codeQuiz = {
 };
         
     //initialize variables needed globally
-    let timer = 100;
+    let timer;
     let questionNumber  = 1;
     let score = 0;
     let questionField = document.getElementById("question-field"); //point to the question feild
     let answerSection = document.getElementById("answer-section"); //point to the answer button section
     let answerButton = document.createElement("BUTTON");  
+    let countdown = document.getElementById("countdown");
+    let timeMessage = document.getElementById("time-message");
 
-    //declare overarching function that will contain smaller nested functions that are each part of gameplay
+    //declare overarching function that will contain two parallel pathways to ending the game
     function playGame(){
-        console.log("play game");
+        timer = 10; //starts the timer back at 10, in case the user is replaying.
+        displayQuestions(); //game can end if the user works through all the questions
+        startTimer(); //game can end if the timer runs out
+        return score;
+    }
+
+    //declare a function that will run a loop based on set time intervals instead of conditional statements
+    function startTimer(){
+        //interval function iterates every 1 second to decrease time remaining to make a countdown clock
+        let timeRemaining = setInterval(function() {
+            timer--; //decrement time 
+            //countdown.textContent = timer; //display the time remaining. 
+            timeMessage.innerHTML = "Seconds Remaining: " + timer ; 
+
+            if(timer === 0 || timer < 0) {  
+              clearInterval(timeRemaining);
+              // when time runs out, gameOver function is called, overwriting question diplays
+              gameOver();
+              timeMessage.textContent = "You ran out of time!"; //display timeout message
+            } 
+          }, 1000); // function runs once a second (1000 miliseconds)
+    };
+
+    function displayQuestions(){
 
         //DISPLAY THE QUESTION
         // find and display question number 
         document.getElementById("question-number").innerHTML =  questionNumber;
-      
+        
         questionField.innerHTML = codeQuiz.questionsAndAnswers[questionNumber - 1].question;
 
         //DISPLAY ANSWER BUTTONS
@@ -57,7 +82,7 @@ let codeQuiz = {
         // a little loop that will append a button for each possible answer option in the array
         for (let i = 0; i < codeQuiz.questionsAndAnswers.length - 1; i++ ){
             console.log(codeQuiz.questionsAndAnswers[questionNumber-1].options[i]);
- 
+
             let answerButton = document.createElement("BUTTON");  
             answerButton.innerHTML = codeQuiz.questionsAndAnswers[questionNumber-1].options[i];                   
             answerSection.appendChild(answerButton);
@@ -74,7 +99,7 @@ let codeQuiz = {
         let noteSection = document.getElementById("note"); //find the answer button section
         let userChoice = choice.srcElement.innerHTML;
 
-        //compare answer from codeQuiz object to the innerHTML of the inner HTML of the soucre element of the click event
+        //compare answer from codeQuiz object to the innerHTML of the soucre element from the click event that triggered the function
         if (userChoice === codeQuiz.questionsAndAnswers[questionNumber-1].rightAnswer){
         
             //display confirmation message
@@ -85,11 +110,11 @@ let codeQuiz = {
             noteSection.innerHTML = "Sorry! your last answer was incorrect. You've lost time on the clock. "; 
         };
 
-        updateScore();
+        displayScore();
 
     };
 
-    function updateScore() {
+    function displayScore() {
         console.log("update score");
 
 
@@ -109,19 +134,26 @@ let codeQuiz = {
             
         //if there are no more questions, prompt the user to play again
         } else{
-            questionField.innerHTML = "Would you like to play again?"
-
-            let answerButton = document.createElement("BUTTON");  
-            answerButton.innerHTML = "Play Again!";
-            answerSection.innerHTML = "";
-            answerSection.appendChild(answerButton);
-
-            //once the user clicks to play again, call up the functiion to play again! 
-            answerButton.addEventListener("click", playGame);
-
+            gameOver();
         }
+    };
+
+    function gameOver(){
 
 
+        answerSection.innerHTML = "";
+        document.getElementById("question-number").innerHTML =  ""; //empty out question number spot
+        questionField.innerHTML = "Would you like to play again?" //display play again message
+
+        let replayButton = document.createElement("BUTTON");   //create, fill, and append play again button
+        replayButton.innerHTML = "Play Again!";
+        
+        answerSection.appendChild(replayButton);
+        questionNumber = 1; //number starts back at one. 
+
+
+        //once the user clicks to play again, call up the functiion to play again! 
+        replayButton.addEventListener("click", playGame);
     };
 
 
