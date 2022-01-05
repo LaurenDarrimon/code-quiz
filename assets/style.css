@@ -13,7 +13,7 @@ body {
 }
 
 main {  
-    padding: 15% 10%;
+    padding: 15% 5% 5% 10%;
     display: flex;
   }
 
@@ -36,6 +36,11 @@ main {
     padding:40px;
     width: 50%;
     background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.5),  rgba(255, 255, 255, 0.25)) ;
+}
+
+input {
+    height: 3rem;
+    padding: 4px;
 }
 
 #note {

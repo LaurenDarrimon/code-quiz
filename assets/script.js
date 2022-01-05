@@ -54,6 +54,7 @@ let codeQuiz = {
     let inputWrapper = document.getElementById("input-wrapper");
     let inputScoreRecordButton = document.createElement("BUTTON");
     let pastScoreList = document.getElementById("past-score-list");
+    let scoreCard = document.getElementById("score-card");
 
     //when the page loads, the inputs socre form is set to display none. 
     inputWrapper.style.display = "none";
@@ -202,6 +203,8 @@ let codeQuiz = {
 
         localStorage.setItem("userScores", JSON.stringify(userScoreArray));
 
+        scoreCard.style.display = "block";
+
         displayPastScores(); 
 
     }
@@ -229,6 +232,9 @@ let codeQuiz = {
             let scoreItem = document.createElement("li"); //creates list item & fills it with info from array
             scoreItem.textContent = pastUserScoreArray[0] + "  Wins: " + pastUserScoreArray[1]  + "  Losses: " + pastUserScoreArray[2];
             pastScoreList.appendChild(scoreItem); //adds the filled list item to the list
+        } else {
+            
+            scoreCard.style.display = "none";
         }
 
     };
