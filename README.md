@@ -24,7 +24,7 @@ On this page, play a Javascript-powered interactive coding quiz game. Each quest
 
 ## Link
 
-[Live Password Generator](https://laurendarrimon.github.io/password-generator/)
+[Live Code Quiz](https://laurendarrimon.github.io/code-quiz/)
 
 
 ## Built With
@@ -38,24 +38,23 @@ On this page, play a Javascript-powered interactive coding quiz game. Each quest
 
 ### Javascript
 
+This code quiz utilizes extensive web APIs to dynamically generate the interactive quiz from Javascript, rather than from hard coded HTML or CSS. These web APIs use javascript to interact with the document object model, or the DOM. 
 
-
-
-### Object-Oriented Javascript
-Early versions of this code quiz utilized a cascading serious of modular javascript functions. In subsequent code refactorings, the functions were transitioned into one code quiz object, with all the required functions converted into multiple object methods that make up the game. This object oriented javascript is cleaner and easier to follow. It also allows the entire code quiz to be a neatly contained object. 
-
-<br>
-<br>
-
-## Code
-
-### Nested Object Methods:
-The process of playing the game is built from linking together various other methods contained within the same self-referencing object, using the keyword "this." 
-
+For example, in the following code snippet, rather than having a set of several buttons written into the HTML for each question, this for loop creates a fresh button for each answer choice from an array of questions answers and then appends each button to the DOM. 
 
 ```
+for (let i = 0; i < codeQuiz.questionsAndAnswers.length - 1; i++ ){
+            
+     let answerButton = document.createElement("BUTTON");  
+    answerButton.innerHTML = codeQuiz.questionsAndAnswers[questionNumber-1].options[i];                   
+    answerSection.appendChild(answerButton);
 
+    answerButton.addEventListener("click", checkAnswer);
+};
 ```
+
+
+
 
 
 
