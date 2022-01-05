@@ -8,7 +8,7 @@ let codeQuiz = {
         {
             question: "Commonly used data types do NOT include ___________. ",
             options:["strings", "alerts", "booleans", "numbers"],
-            rightAnswer: "numbers",
+            rightAnswer: "alerts",
         }, 
         {
             question: "The condition for an if/else statement is enclosed within ___________. ",
@@ -27,45 +27,50 @@ let codeQuiz = {
         }, 
         {
             question: "String values must be enclosed within __________ ?",
-            options:["parentheses", "sqaure brackets", "curly brackets", "quotation marks"],
+            options:["parentheses", "square brackets", "curly brackets", "quotation marks"],
             rightAnswer: "quotation marks",
         }, 
     ],
 };
         
-    //initialize variables needed globally
-    let timer;
+    //initialize variables & counters needed globally
+    let timer = 20; //starts the timer
     let questionNumber  = 1;
-    let score = 0;
+    let rightCount = 0;
+    let wrongCount = 0;
+
+    //DOM variables needed globally
     let questionField = document.getElementById("question-field"); //point to the question feild
     let answerSection = document.getElementById("answer-section"); //point to the answer button section
     let answerButton = document.createElement("BUTTON");  
     let countdown = document.getElementById("countdown");
     let timeMessage = document.getElementById("time-message");
+    let rightDisplay = document.getElementById("right-display");
+    let wrongDisplay = document.getElementById("wrong-display");
 
     //declare overarching function that will contain two parallel pathways to ending the game
     function playGame(){
-        timer = 10; //starts the timer back at 10, in case the user is replaying.
+        timer = 20;
         displayQuestions(); //game can end if the user works through all the questions
         startTimer(); //game can end if the timer runs out
-        return score;
     }
 
     //declare a function that will run a loop based on set time intervals instead of conditional statements
     function startTimer(){
+
         //interval function iterates every 1 second to decrease time remaining to make a countdown clock
         let timeRemaining = setInterval(function() {
             timer--; //decrement time 
             //countdown.textContent = timer; //display the time remaining. 
             timeMessage.innerHTML = "Seconds Remaining: " + timer ; 
-
-            if(timer === 0 || timer < 0) {  
-              clearInterval(timeRemaining);
-              // when time runs out, gameOver function is called, overwriting question diplays
-              gameOver();
-              timeMessage.textContent = "You ran out of time!"; //display timeout message
-            } 
-          }, 1000); // function runs once a second (1000 miliseconds)
+            if(timer === 0) {  
+                timer = 0;
+                clearInterval(timeRemaining);
+                // when time runs out, gameOver function is called, overwriting question diplays
+                gameOver();
+                timeMessage.textContent = "You ran out of time!"; //display timeout message
+              } 
+          }, 1000); // function runs once a second (1000 miliseconds)  
     };
 
     function displayQuestions(){
@@ -81,13 +86,13 @@ let codeQuiz = {
 
         // a little loop that will append a button for each possible answer option in the array
         for (let i = 0; i < codeQuiz.questionsAndAnswers.length - 1; i++ ){
-            console.log(codeQuiz.questionsAndAnswers[questionNumber-1].options[i]);
+            //console.log(codeQuiz.questionsAndAnswers[questionNumber-1].options[i]);
 
             let answerButton = document.createElement("BUTTON");  
             answerButton.innerHTML = codeQuiz.questionsAndAnswers[questionNumber-1].options[i];                   
             answerSection.appendChild(answerButton);
 
-            //once the user clicks a answer button, call up the functino to check the answer
+            //once the user clicks a answer button, call up the function to check the answer
             answerButton.addEventListener("click", checkAnswer);
         };
     } 
@@ -95,52 +100,44 @@ let codeQuiz = {
 
     function checkAnswer(choice){
         console.log(choice);
-
         let noteSection = document.getElementById("note"); //find the answer button section
         let userChoice = choice.srcElement.innerHTML;
 
         //compare answer from codeQuiz object to the innerHTML of the soucre element from the click event that triggered the function
-        if (userChoice === codeQuiz.questionsAndAnswers[questionNumber-1].rightAnswer){
-        
+        if (userChoice === codeQuiz.questionsAndAnswers[questionNumber-1].rightAnswer){ //WIN 
             //display confirmation message
             noteSection.innerHTML = "Yes! Your last answer was right! You've earned a point! "; 
-            score++; //increment score. 
-
-        } else {
+            rightCount++; //increment wins score. 
+        } else { //LOSS
             noteSection.innerHTML = "Sorry! your last answer was incorrect. You've lost time on the clock. "; 
+            timer = timer-5; //take 5 seconds off the clock
+            wrongCount++; //increment wins score. 
         };
 
-        displayScore();
+        displayScore(); 
 
     };
 
     function displayScore() {
-        console.log("update score");
+        rightDisplay.textContent = "# Right: " + rightCount;  
+        wrongDisplay.textContent = "# Wrong: " + wrongCount;
 
-
-        //display score here. 
 
         nextQuestion();
 
     };
 
     function nextQuestion() {
-        console.log("next question");
-
         //if there are still more questions, increment the question number, and run the whole thing through again.  
         if (questionNumber < codeQuiz.questionsAndAnswers.length){
-            questionNumber++; 
-            playGame();
-            
-        //if there are no more questions, prompt the user to play again
-        } else{
+            questionNumber++;   //increase the question number
+            displayQuestions(); //run through display questins function again, at next index position
+        } else{  //if there are no more questions, prompt the user to play again
             gameOver();
         }
     };
 
     function gameOver(){
-
-
         answerSection.innerHTML = "";
         document.getElementById("question-number").innerHTML =  ""; //empty out question number spot
         questionField.innerHTML = "Would you like to play again?" //display play again message
@@ -151,10 +148,10 @@ let codeQuiz = {
         answerSection.appendChild(replayButton);
         questionNumber = 1; //number starts back at one. 
 
-
         //once the user clicks to play again, call up the functiion to play again! 
         replayButton.addEventListener("click", playGame);
     };
+
 
 
 

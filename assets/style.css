@@ -31,6 +31,7 @@ main {
 #question-card {
     border: 5px solid gray;
     padding:40px;
+    width: 50%;
     background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.5),  rgba(255, 255, 255, 0.25)) ;
 }
 
