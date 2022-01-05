@@ -6,7 +6,6 @@ Timed Quiz Game with Coding Questions
 * [Description](#description)
 * [Link](#link)
 * [Methods](#methods)
-* [Code](#code)
 * [Author](#author)
 
 
@@ -38,7 +37,7 @@ On this page, play a Javascript-powered interactive coding quiz game. Each quest
 
 ### Javascript
 
-This code quiz utilizes extensive web APIs to dynamically generate the interactive quiz from Javascript, rather than from hard coded HTML or CSS. These web APIs use javascript to interact with the document object model, or the DOM. 
+This code quiz utilizes extensive web APIs to dynamically generate the interactive quiz from Javascript, rather than from hard coded HTML or CSS. These web APIs use javascript to interact with the document object model, or the DOM. The javascript finds elements, changes them, and adds new elements, based on what's needed for the game. 
 
 For example, in the following code snippet, rather than having a set of several buttons written into the HTML for each question, this for loop creates a fresh button for each answer choice from an array of questions answers and then appends each button to the DOM. 
 

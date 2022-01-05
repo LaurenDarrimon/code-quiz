@@ -41,7 +41,8 @@ let codeQuiz = {
     let gameOverIndicator = false;
     let userScoreArray = []; 
 
-    //DOM variables needed globally
+    //DOM variables
+    let startGameButton = document.querySelector("#start"); //point to the id tag "start" (the button)
     let questionField = document.getElementById("question-field"); //point to the question feild
     let answerSection = document.getElementById("answer-section"); //point to the answer button section
     let answerButton = document.createElement("BUTTON");  
@@ -52,9 +53,12 @@ let codeQuiz = {
     let scoreMessage = document.getElementById("score-message");
     let inputWrapper = document.getElementById("input-wrapper");
     let inputScoreRecordButton = document.createElement("BUTTON");
+    let pastScoreList = document.getElementById("past-score-list");
 
     //when the page loads, the inputs socre form is set to display none. 
     inputWrapper.style.display = "none";
+
+
 
     //declare overarching function that will contain two parallel pathways to ending the game
     function playGame(){
@@ -194,29 +198,48 @@ let codeQuiz = {
         let initials = document.getElementById("input-field").value;
         console.log(initials);
 
-        userScoreArray = [initials, rightCount, wrongCount];
+        userScoreArray = [initials, rightCount, wrongCount]; //creates array to store score info
 
-        localStorage.setItem("userScore", JSON.stringify(userScoreArray));
+        localStorage.setItem("userScores", JSON.stringify(userScoreArray));
 
-        
+        displayPastScores(); 
+
     }
 
     function resetGame(){
         //reset various variables, counters, score, etc. to reset gameplay 
         questionNumber = 1; //number starts back at one, in case this is a replay
-        timer = 20; //restarts timer incase this is a replay
+        timer = 20; //restarts timer in case this is a replay
         inputWrapper.style.display = "none"; //resets input field 
+        rightCount = 0;
+        wrongCount = 0;
 
-        playGame();
+
+        playGame(); //initialize game function
     }
 
+    function displayPastScores(){
+        
+        //gets past score info out of local storage and stores it as an array
+        let pastUserScoreArray = JSON.parse(localStorage.getItem("userScores"));
+        
+        //if there is something in that array, then display it
+        if (pastUserScoreArray !== null){
+
+            let scoreItem = document.createElement("li"); //creates list item & fills it with info from array
+            scoreItem.textContent = pastUserScoreArray[0] + "  Wins: " + pastUserScoreArray[1]  + "  Losses: " + pastUserScoreArray[2];
+            pastScoreList.appendChild(scoreItem); //adds the filled list item to the list
+        }
+
+    };
 
 
 
-//when the page loads ask the user if they'd like to play the game. If they say click start button, then run the code quiz. 
 
-//point to the id tag "start" (the button)
-let startGameButton = document.querySelector("#start");
+//when the page loads, display any past socre information that exists 
+
+displayPastScores();
+
 
 
 //when start button is clicked, the code to play the game will run

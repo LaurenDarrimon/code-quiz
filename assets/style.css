@@ -6,10 +6,13 @@
     font-family: sans-serif;
 }
 
-main {
+body {
     background-image: url(shadow.jpg);
     background-size: cover;
     background-position: center; 
+}
+
+main {  
     padding: 15% 10%;
     display: flex;
   }
@@ -60,6 +63,14 @@ button:hover {
 
 aside {
     float:right;
+}
+
+#score-card {
+    border: 5px solid gray;
+    padding:30px;
+    width: 100%;
+    margin-top: 30px;
+    background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.5),  rgba(255, 255, 255, 0.25)) ;
 }
 
 
