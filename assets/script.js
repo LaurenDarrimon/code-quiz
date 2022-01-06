@@ -44,6 +44,7 @@ let codeQuiz = {
     let startGameButton = document.querySelector("#start"); //point to the id tag "start" (the button)
     let questionField = document.getElementById("question-field"); //point to the question feild
     let answerSection = document.getElementById("answer-section"); //point to the answer button section
+    let noteSection = document.getElementById("note"); //find the answer button section
     let answerButton = document.createElement("BUTTON");  
     let countdown = document.getElementById("countdown");
     let timeMessage = document.getElementById("time-message");
@@ -91,9 +92,8 @@ let codeQuiz = {
           }, 1000); // function runs once a second (1000 miliseconds)  
     };
 
-    function displayQuestions(){
-
-        //DISPLAY THE QUESTION
+    function displayQuestions(){ //DISPLAY THE QUESTION
+        
         // find and display question number 
         document.getElementById("question-number").innerHTML =  questionNumber;
         
@@ -116,7 +116,6 @@ let codeQuiz = {
     } 
 
     function checkAnswer(choice){
-        let noteSection = document.getElementById("note"); //find the answer button section
         let userChoice = choice.srcElement.innerHTML;
 
         //compare answer from codeQuiz object to the innerHTML of the soucre element from the click event that triggered the function
@@ -154,6 +153,7 @@ let codeQuiz = {
         timer = 0;
         displayScoreInput();
         gameOverIndicator = !gameOverIndicator; //toggle game over from false to true
+        noteSection.innerHTML = ""; 
 
         //this conditional prevents the game over code from running twice, once when the timer runs out and cone when the questions are done 
         if (gameOverIndicator){
@@ -226,7 +226,7 @@ let codeQuiz = {
         let i = pastUserScoreArray.length - 1; //set a variable to find index of latest score in array
         
         let scoreItem = document.createElement("li"); //creates list item & fills it with info from array
-        scoreItem.textContent = pastUserScoreArray[i][0] + "  Wins: " + pastUserScoreArray[i][1]  + "  Losses: " + pastUserScoreArray[i][2];
+        scoreItem.textContent = pastUserScoreArray[i][0] + "  Right: " + pastUserScoreArray[i][1]  + "  Wrong: " + pastUserScoreArray[i][2];
         pastScoreList.appendChild(scoreItem); //adds the latest list item to the list
     };
 
