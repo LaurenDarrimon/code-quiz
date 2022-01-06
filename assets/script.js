@@ -1,5 +1,3 @@
-
-
 //use object notation to create over-arching code quiz object
 let codeQuiz = {
 
@@ -60,8 +58,6 @@ let codeQuiz = {
 
     //when the page loads, the inputs socre form is set to display none. 
     inputWrapper.style.display = "none";
-
-
 
     //declare overarching function that will contain two parallel pathways to ending the game
     function playGame(){
@@ -190,6 +186,10 @@ let codeQuiz = {
     }
 
     function storeScore(){
+        //hide the score input
+        inputWrapper.style.display = "none";
+        scoreMessage.textContent = "You've submitted your score!";
+
         let initials = document.getElementById("input-field").value;
 
         userScoreArray = [initials, rightCount, wrongCount]; //stores current score info
@@ -204,7 +204,8 @@ let codeQuiz = {
 
         localStorage.setItem("userScores", JSON.stringify(pastUserScoreArray));
         scoreCard.style.display = "block";
-        displayPastScores();  
+
+        displayNewScore();  
     }
 
     function resetGame(){
@@ -218,25 +219,34 @@ let codeQuiz = {
         playGame(); //initialize game function
     }
 
+    function displayNewScore(){
+        //take user scores array out of storage
+        pastUserScoreArray = JSON.parse(localStorage.getItem("userScores"));
+
+        let i = pastUserScoreArray.length - 1; //set a variable to find index of latest score in array
+        
+        let scoreItem = document.createElement("li"); //creates list item & fills it with info from array
+        scoreItem.textContent = pastUserScoreArray[i][0] + "  Wins: " + pastUserScoreArray[i][1]  + "  Losses: " + pastUserScoreArray[i][2];
+        pastScoreList.appendChild(scoreItem); //adds the latest list item to the list
+    };
+
     function displayPastScores(){
         //take user scores array out of storage
         pastUserScoreArray = JSON.parse(localStorage.getItem("userScores"));
-        console.log(pastUserScoreArray);
-        //if there is something in the past user score array, then display it
-        
-        if (pastUserScoreArray !== null){
-            for (i=0; i<pastUserScoreArray.length; i++){
-                let scoreItem = document.createElement("li"); //creates list item & fills it with info from array
-                scoreItem.textContent = pastUserScoreArray[i][0] + "  Wins: " + pastUserScoreArray[i][1]  + "  Losses: " + pastUserScoreArray[i][2];
-                pastScoreList.appendChild(scoreItem); //adds the filled list item to the list
-            }
-        } else {
-            scoreCard.style.display = "none";
+        //loop through array to display all past scores
+        for (i=0; i < pastUserScoreArray.length; i++){
+            let scoreItem = document.createElement("li"); //creates list item & fills it with info from array
+            scoreItem.textContent = pastUserScoreArray[i][0] + "  Wins: " + pastUserScoreArray[i][1]  + "  Losses: " + pastUserScoreArray[i][2];                
+            pastScoreList.appendChild(scoreItem); //adds the filled list item to the list
         }
     };
 
-
-displayPastScores(); //when the page loads, display any past socre information that exists 
+//when the page loads, display any past score information that exists
+if (pastUserScoreArray !== null) {  
+        displayPastScores();
+} else{
+    scoreCard.style.display = "none"; //if nothing exists, hide the score display
+} 
 
 startGameButton.addEventListener("click", playGame); //when start button is clicked, the code to play the game will run
 
