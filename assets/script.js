@@ -39,7 +39,8 @@ let codeQuiz = {
     let rightCount = 0;
     let wrongCount = 0;
     let gameOverIndicator = false;
-    let userScoreArray = []; 
+    let userScoreArray = []; //each user that submits a score will fill this array with initials, wins, losses
+    let pastUserScores = [] //declare an empty array that we can fill with arrays of user sccore info
 
     //DOM variables
     let startGameButton = document.querySelector("#start"); //point to the id tag "start" (the button)
@@ -55,6 +56,7 @@ let codeQuiz = {
     let inputScoreRecordButton = document.createElement("BUTTON");
     let pastScoreList = document.getElementById("past-score-list");
     let scoreCard = document.getElementById("score-card");
+    let pastUserScoreArray = JSON.parse(localStorage.getItem("userScores"));  //gets past score info out of local storage and stores it as an array
 
     //when the page loads, the inputs socre form is set to display none. 
     inputWrapper.style.display = "none";
@@ -117,7 +119,6 @@ let codeQuiz = {
         };
     } 
 
-
     function checkAnswer(choice){
         let noteSection = document.getElementById("note"); //find the answer button section
         let userChoice = choice.srcElement.innerHTML;
@@ -134,7 +135,6 @@ let codeQuiz = {
             wrongCount++; //increment wins score. 
             displayScore(); 
         };
-
     };
 
     function displayScore() {
@@ -157,9 +157,7 @@ let codeQuiz = {
     function gameOver(){
         timer = 0;
         displayScoreInput();
-
         gameOverIndicator = !gameOverIndicator; //toggle game over from false to true
-
 
         //this conditional prevents the game over code from running twice, once when the timer runs out and cone when the questions are done 
         if (gameOverIndicator){
@@ -175,18 +173,14 @@ let codeQuiz = {
             //once the user clicks to play again, call up the functiion to play again! 
             replayButton.addEventListener("click", resetGame);
         }
-
-        
     };
 
     //prompts the user to see if they would like to store their score with initials 
     function displayScoreInput(){
 
-
         //add a prompt for the user to enter initials with score
         scoreMessage.textContent = "Enter your initials to record your score.";
-        //toggle the input display field to show up
-        inputWrapper.style.display = "block";
+        inputWrapper.style.display = "block"; //toggle the input display field to show up
 
         inputScoreRecordButton.innerHTML = "Submit Score";                   
         inputWrapper.appendChild(inputScoreRecordButton);
@@ -197,16 +191,20 @@ let codeQuiz = {
 
     function storeScore(){
         let initials = document.getElementById("input-field").value;
-        console.log(initials);
 
-        userScoreArray = [initials, rightCount, wrongCount]; //creates array to store score info
+        userScoreArray = [initials, rightCount, wrongCount]; //stores current score info
 
-        localStorage.setItem("userScores", JSON.stringify(userScoreArray));
+        console.log(userScoreArray);
+        //note - you can't push to an empty array. 
+        if (pastUserScoreArray){ // if it's not empty, add current user Score array to big array of all user scores
+            pastUserScoreArray.push(userScoreArray); 
+        } else { //if it was null, set it to include only the current user score array
+            pastUserScoreArray = [userScoreArray,]
+        }
 
+        localStorage.setItem("userScores", JSON.stringify(pastUserScoreArray));
         scoreCard.style.display = "block";
-
-        displayPastScores(); 
-
+        displayPastScores();  
     }
 
     function resetGame(){
@@ -217,37 +215,28 @@ let codeQuiz = {
         rightCount = 0;
         wrongCount = 0;
 
-
         playGame(); //initialize game function
     }
 
     function displayPastScores(){
+        //take user scores array out of storage
+        pastUserScoreArray = JSON.parse(localStorage.getItem("userScores"));
+        console.log(pastUserScoreArray);
+        //if there is something in the past user score array, then display it
         
-        //gets past score info out of local storage and stores it as an array
-        let pastUserScoreArray = JSON.parse(localStorage.getItem("userScores"));
-        
-        //if there is something in that array, then display it
         if (pastUserScoreArray !== null){
-
-            let scoreItem = document.createElement("li"); //creates list item & fills it with info from array
-            scoreItem.textContent = pastUserScoreArray[0] + "  Wins: " + pastUserScoreArray[1]  + "  Losses: " + pastUserScoreArray[2];
-            pastScoreList.appendChild(scoreItem); //adds the filled list item to the list
+            for (i=0; i<pastUserScoreArray.length; i++){
+                let scoreItem = document.createElement("li"); //creates list item & fills it with info from array
+                scoreItem.textContent = pastUserScoreArray[i][0] + "  Wins: " + pastUserScoreArray[i][1]  + "  Losses: " + pastUserScoreArray[i][2];
+                pastScoreList.appendChild(scoreItem); //adds the filled list item to the list
+            }
         } else {
-            
             scoreCard.style.display = "none";
         }
-
     };
 
 
+displayPastScores(); //when the page loads, display any past socre information that exists 
 
-
-//when the page loads, display any past socre information that exists 
-
-displayPastScores();
-
-
-
-//when start button is clicked, the code to play the game will run
-startGameButton.addEventListener("click", playGame);
+startGameButton.addEventListener("click", playGame); //when start button is clicked, the code to play the game will run
 
