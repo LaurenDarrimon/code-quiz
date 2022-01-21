@@ -54,9 +54,6 @@ for (let i = 0; i < codeQuiz.questionsAndAnswers.length - 1; i++ ){
 
 
 
-
-
-
 ## Author
 
 ### Lauren Duker Darrimon 
@@ -64,3 +61,7 @@ for (let i = 0; i < codeQuiz.questionsAndAnswers.length - 1; i++ ){
 - [Link to Portfolio Site](https://www.laurenlalita.com)
 - [Link to Github](https://github.com/LaurenDarrimon)
 - [Link to LinkedIn](https://www.linkedin.com/in/lauren-lalita-duker-9537b1201/)
+
+
+## License
+[MIT Open Source Software](/LICENSE.txt)
